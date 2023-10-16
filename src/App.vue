@@ -1,28 +1,57 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <song-list :songs="songs" @add-to-playlist="addToPlaylist" @play-song="playSong" />
+    <play-list :playlist="playlist" @play-song="playSong" />
+    <now-playing :current-song="currentSong" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  props: {
+    songsProp: Array,
+  },
+  methods: {
+    addToPlaylist(song) {
+      this.playlist.push(song);
+    },
+    playSong(song) {
+      this.currentSong = song;
+    },
+  },
+  setup() {
+    const playlist = ref([]);
+    const currentSong = ref(null);
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    const songs = ref([
+      {
+        song_id: 1,
+        title: 'Song 1',
+        artist: 'Artist 1',
+        image_url: 'song1.jpg',
+      },
+      {
+        song_id: 2,
+        title: 'Song 2',
+        artist: 'Artist 2',
+        image_url: 'song2.jpg',
+      },
+      {
+        song_id: 3,
+        title: 'Song 3',
+        artist: 'Artist 3',
+        image_url: 'song3.jpg',
+      },
+      // Add more songs as needed
+    ]);
+
+    return {
+      songs,
+      playlist,
+      currentSong,
+    };
+  },
+};
+</script>
